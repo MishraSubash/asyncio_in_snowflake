@@ -6,7 +6,7 @@
 import snowflake.connector
 import asyncio
 
-# Import snowflake credentails
+# Import snowflake credentials
 from credentials_file import snowflake_username, snowflake_password, snowflake_account
 
 
@@ -16,12 +16,12 @@ def connection(
     password: str,
     account: str,
 ):
-    """:Connection function to a Snowflake data using Snowflake
+    """Connection function to a Snowflake data using Snowflake
     app login details :
     param username: str :
     param password: str :
     param account: str :
-    return: connection object"""
+    return connection object """
     conn = snowflake.connector.connect(
         user=username, password=password, account=account
     )
@@ -33,7 +33,7 @@ snowflake_connection = connection(
 )
 
 
-# fetch data as pandas dataframe
+# fetch data as pandas DataFrame
 def fetch_data_into_dataframe(sql_query, connection_string):
     cur = connection_string.cursor()
     cur.execute(sql_query)
@@ -45,16 +45,16 @@ sql_query1 = """SELECT * FROM "DB"."SCHEMA".TABLE1" """
 sql_query2 = """SELECT * FROM "DB"."SCHEMA".TABLE2" """
 
 
-# Define asynchronous function to fetch data
+# Define an asynchronous function to fetch data
 async def fetch_data_into_dataframe_async(sql_query: str, connection_string: str):
-    """Helper function to make fetch_data_into_dataframe an async function. This
-    will start fetching the query and allows computer to process multiples queries or
+    """ Helper function to make fetch_data_into_dataframe an async function. This
+    will start fetching the query and allow the computer to process multiple queries or
     other computation while it waits
     Args:
-    sql_query (str): sql query string
+    sql_query (str): SQL query string
     conn (connection string): database connection
 
-    retuns:
+    returns:
     event loop: event loop of all queries
     """
     return fetch_data_into_dataframe(sql_query, connection_string)
@@ -72,7 +72,7 @@ async def main():
         fetch_data_into_dataframe_async(sql_query2, snowflake_connection),
     ]
     results = await asyncio.gather(*tasks)
-    # Results will contain pandas dataframes and return dataframes in the order of task schedule
+    # Results will contain pandas DataFrames and return DataFrames in the order of task schedule
     df1, df2 = results[0], results[1]
 
     print(df1.head())
